@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 import { NavItemRecord } from "./navItems";
 import { SidebarContext } from "../../context/SidebarContext";
-import { ArrowRightIcon } from "../../assets/icons/ArrowRightIcon";
+import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 
 interface Props {
   isActive: boolean;

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SendMoneyIcon } from "../../assets/icons/SendMoneyIcon";
-import { ArrowRightIcon } from "../../assets/icons/ArrowRightIcon";
-import { DashboardIcon } from "../../assets/icons/DashboardIcon";
+import { SendMoneyIcon } from "../icons/SendMoneyIcon";
+import { ArrowRightIcon } from "../icons/ArrowRightIcon";
+import { DashboardIcon } from "../icons/DashboardIcon";
 
 import {
   // MoreVertical,

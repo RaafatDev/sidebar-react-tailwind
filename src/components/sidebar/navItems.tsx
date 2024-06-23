@@ -1,38 +1,44 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SendMoneyIcon } from "../icons/SendMoneyIcon";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { DashboardIcon } from "../icons/DashboardIcon";
 
+import { CreditCard } from "lucide-react";
 import {
-  // MoreVertical,
-  // ChevronLast,
-  // ChevronFirst,
-  CreditCard,
-  // LayoutDashboard,
-} from "lucide-react";
-// import { useContext, createContext, useState, PropsWithChildren } from "react";
-import {
-  //   BarChart3,
   Boxes,
   LifeBuoy,
   Package,
   Receipt,
   Settings,
-  // ArrowBigRight,
-  //   UserCircle,
   Landmark,
 } from "lucide-react";
 
-// type NavItemLabel =
+type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & unknown;
 
-export type NavItemRecord = {
-  icon: JSX.Element;
-  path: string;
-  label: string;
-  nested?: { icon: JSX.Element; label: string; path: string }[];
+// type ItemRecord = { icon: JSX.Element; path: string; label: unknown };
+// type NavItemRecord = ItemRecord & { nested?: ItemRecord[] };
+
+type RawNavItemRecord = { icon: JSX.Element; path: string; label: unknown };
+type RawNavItemRecordWithNested = RawNavItemRecord & {
+  nested: RawNavItemRecord[];
 };
 
-export const navItemsTop: NavItemRecord[] = [
+export type ItemLabel =
+  | (typeof navItemsTop)[number]["label"]
+  | (typeof navItemsTop)[number]["nested"][number]["label"]
+  | (typeof navItemsBottom)[number]["label"]
+  | (typeof navItemsBottom)[number]["nested"][number]["label"];
+
+export type NavItemRecord = Prettify<
+  Omit<RawNavItemRecord, "label"> & { label: ItemLabel }
+>;
+
+export type NavItemRecordWithNested = NavItemRecord & {
+  nested: NavItemRecord[];
+};
+
+export const navItemsTop = [
   {
     icon: <DashboardIcon size={20} />,
     label: "Dashboard",
@@ -46,7 +52,7 @@ export const navItemsTop: NavItemRecord[] = [
     nested: [
       {
         icon: <ArrowRightIcon size={14} />,
-        label: "Nested-item 1",
+        label: "Nested-item 1 xxx xxx 111 2222",
         path: "/nested-item/page-1",
       },
       {
@@ -102,9 +108,9 @@ export const navItemsTop: NavItemRecord[] = [
     path: "/item-6",
     nested: [],
   },
-];
+] as const satisfies RawNavItemRecordWithNested[];
 
-export const navItemsBottom: NavItemRecord[] = [
+export const navItemsBottom = [
   {
     icon: <Settings size={20} />,
     label: "Settings",
@@ -117,4 +123,4 @@ export const navItemsBottom: NavItemRecord[] = [
     path: "/faq",
     nested: [],
   },
-];
+] as const satisfies RawNavItemRecordWithNested[];

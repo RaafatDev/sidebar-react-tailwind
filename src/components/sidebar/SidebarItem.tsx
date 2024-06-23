@@ -1,18 +1,17 @@
 import { useContext } from "react";
 
-import { NavItemRecord } from "./navItems";
+// import { ItemLabel, NavItemRecord } from "./navItems";
 import { SidebarContext } from "../../context/SidebarContext";
 import { ItemButton } from "./ItemButton";
+import { NavItemRecordWithNested } from "./navItems";
 
 interface Props {
   alert?: boolean;
-  item: NavItemRecord;
+  item: NavItemRecordWithNested;
 }
 
 export const SidebarItem = ({ item, alert }: Props) => {
   const {
-    isSidebarExpanded,
-    toggleSidebarExpanded,
     activeItem,
     updateActiveItem,
     expandedCollapsible,
@@ -21,7 +20,11 @@ export const SidebarItem = ({ item, alert }: Props) => {
 
   const isCollapsibleOpen = expandedCollapsible === item.label;
 
-  const isCollapsibleExpanded = isCollapsibleOpen && isSidebarExpanded;
+  if (isCollapsibleOpen) {
+    console.log({ expandedCollapsible, isCollapsibleOpen, label: item.label });
+  }
+
+  // const isCollapsibleExpanded = isCollapsibleOpen && isSidebarExpanded;
 
   const active = activeItem === item.label;
   const isCollapsible = item.nested && item.nested.length > 0;
@@ -33,29 +36,25 @@ export const SidebarItem = ({ item, alert }: Props) => {
 
   return (
     <li
-      className={`${isCollapsibleExpanded ? "outline outline-[var(--sidebar-collapsible-outline-color)]" : ""} `}
+      // className={`${isCollapsibleExpanded ? "outline outline-[var(--sidebar-collapsible-outline-color)]" : ""} `}
+      className={`${isCollapsibleOpen ? "outline outline-[var(--sidebar-collapsible-outline-color)]" : ""} `}
     >
       <ItemButton
         isCollapsible={isCollapsible}
-        isCollapsibleExpanded={isCollapsibleExpanded}
+        // isCollapsibleExpanded={isCollapsibleExpanded}
+        isCollapsibleExpanded={isCollapsibleOpen}
         item={item}
         alert={alert}
         isActive={active && !isCollapsible}
         hasNestedItemActive={hasNestedItemActive}
         onClick={() => {
           if (isCollapsible) {
-            if (isSidebarExpanded) {
-              // setIsCollapsibleOpen((prev) => !prev);
-              updateExpandedCollapsible(isCollapsibleOpen ? "" : item.label);
-            }
-            if (!isSidebarExpanded) {
-              toggleSidebarExpanded();
-              // setIsCollapsibleOpen(true);
-              updateExpandedCollapsible(item.label);
-            }
+            updateExpandedCollapsible(isCollapsibleOpen ? null : item.label);
           } else {
             const value =
-              (active || isCollapsibleOpen) && isCollapsible ? "" : item.label;
+              (active || isCollapsibleOpen) && isCollapsible
+                ? null
+                : item.label;
 
             updateActiveItem(value);
           }
@@ -64,7 +63,9 @@ export const SidebarItem = ({ item, alert }: Props) => {
 
       {isCollapsible ? (
         <div
-          className={`grid ${isCollapsibleExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500`}
+          // className={`grid ${isCollapsibleExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500`}
+          className={`grid ${isCollapsibleOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500`}
+          // className={`grid ${isCollapsibleOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all`}
         >
           <ul className="overflow-hidden">
             {item.nested?.map((nestedItem) => {
@@ -73,6 +74,7 @@ export const SidebarItem = ({ item, alert }: Props) => {
               return (
                 <li key={nestedItem.label}>
                   <ItemButton
+                    isNestedItem
                     item={nestedItem}
                     isActive={isNestedItemActive}
                     onClick={() => updateActiveItem(nestedItem.label)}

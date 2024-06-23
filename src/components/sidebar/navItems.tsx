@@ -16,9 +16,6 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & unknown;
 
-// type ItemRecord = { icon: JSX.Element; path: string; label: unknown };
-// type NavItemRecord = ItemRecord & { nested?: ItemRecord[] };
-
 type RawNavItemRecord = { icon: JSX.Element; path: string; label: unknown };
 type RawNavItemRecordWithNested = RawNavItemRecord & {
   nested: RawNavItemRecord[];

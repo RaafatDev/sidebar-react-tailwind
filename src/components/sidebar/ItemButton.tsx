@@ -40,7 +40,6 @@ export const ItemButton = ({
     >
       {item.icon}
       <span
-        // className={`w-32 flex-1 items-start text-start text-sm group-hover/button:whitespace-break-spaces ${
         className={`w-32 flex-1 items-start text-start text-sm ${
           isSidebarExpanded
             ? "ml-3 inline-block"
